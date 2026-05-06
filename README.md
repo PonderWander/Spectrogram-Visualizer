@@ -30,23 +30,23 @@ The "⚙ Settings" button reveals advanced controls (Trail, Envelope, Pulses, an
 ## Path details
 
 ### Line — Diagnostic Readout
-![Line Visualization](https://github.com/PonderWander/Spectrogram-Visualizer/blob/main/assets/line.png?raw=true)
+![Line Visualization](assets/line.png)
 The honest spectrogram. Frequency bins map to horizontal positions; bar heights show magnitude. No envelope, no pulses, no trail. Useful as a reference to see what's actually in the audio.
 
 ### Circle — Sun Corona
-![Circle Visualization](https://github.com/PonderWander/Spectrogram-Visualizer/blob/main/assets/circle.png?raw=true)
+![Circle Visualization](assets/circle.png)
 Slim bars distributed around a circle. The path itself is the audio's "rest state"; bars push outward on every frame to show current frequency content. High-frequency events (cymbals, sibilance, hi-hats above ~4kHz) trigger pulses that expand from the circle's edge outward across the canvas. The detection has low sensitivity, which means the refractory period itself acts as a metronome on busy treble — pulses fire on the strongest hits and skip the rest.
 
 ### Polygon (hex) — Kick-Driven Architecture
-![Hexagon Visualization](https://github.com/PonderWander/Spectrogram-Visualizer/blob/main/assets/hexagon.png?raw=true)
+![Hexagon Visualization](assets/hexagon.png)
 Heavy bars on the six edges of a hexagon. Kick drum hits trigger the entire hexagon-as-snapshot to collapse inward through the canvas center, producing a "drumhead" pulse that reads as the kick visually. Uses log-mel onset strength on the bass band (43-301Hz), peak-picked with a refractory window so it locks to the actual drum pattern.
 
 ### Spiral — Spinning Wheel With Sparks
-![Spiral Visualization](https://github.com/PonderWander/Spectrogram-Visualizer/blob/main/assets/spiral.png?raw=true)
+![Spiral Visualization](assets/spiral.png)
 A spiral that spins, with rotation velocity driven by the audio's running envelope. When the music is energetic the spiral spins fast; in silence it slows to a halt. Snare and hi-hat hits are detected via log-mel onset on the upper-mid band (170Hz-5.5kHz) and trigger "tail flicks" — the outer 12% of the spiral is captured as a snapshot and ejected, with rigid-body translation along the tangent at the moment of release plus rotational momentum from the spinning motion. Faster spin = farther throw, like a centrifuge releasing material.
 
 ### Lissajous — Compositional Phase Detector
-![Lissajous Visualization](https://github.com/PonderWander/Spectrogram-Visualizer/blob/main/assets/lissajous.png?raw=true)
+![Lissajous Visualization](assets/lissajous.png)
 A 3:2 figure-8 that rotates to an angle determined by the current bass note's register, and breathes (expands as it's held longer). When the bass changes register — typically at chord changes, drops, and structural transitions — the figure ejects two arcs from its lobes perpendicular to its rotation axis. These "torus halos" expand laterally as they travel outward, peak in brightness as they would close the figure's openings, then fade.
 
 What's interesting about this one: the detection criteria (stable peak, prominence, whole-tone quantization, hysteresis, lock duration) end up only firing on *compositionally significant* changes — so the lissajous reads music's structural hierarchy more than its bass line. It catches drops, phrase boundaries, and chord changes. With a trail effect enabled, the rotational history of the figure persists as a 3D-feeling tornado of past states.
