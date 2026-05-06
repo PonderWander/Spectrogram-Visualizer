@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spectrogram Visualizer</title>
+  <link rel="stylesheet" href="visualizer.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- Primary controls: always visible -->
+    <div id="primaryControls">
+      <button id="loadBtn">Load audio file</button>
+      <input type="file" id="fileInput" accept="audio/*" style="display: none;" />
+      <button id="demoBtn">Use demo tone</button>
+      <button id="playBtn" disabled>Play</button>
+      <button id="fsBtn">Fullscreen</button>
+
+      <select id="pathSel">
+        <option value="line">Line</option>
+        <option value="circle" selected>Circle</option>
+        <option value="lissajous">Lissajous</option>
+        <option value="spiral">Spiral</option>
+        <option value="polygon">Polygon (hex)</option>
+      </select>
+
+      <button id="settingsToggle" title="Show/hide advanced settings">⚙ Settings</button>
+    </div>
+
+    <!-- Advanced controls: hidden by default, toggled via the settings button -->
+    <div id="advancedControls">
+      <label><input type="checkbox" id="trailChk" /> Trail</label>
+      <label><input type="checkbox" id="envChk" checked /> Envelope</label>
+      <label><input type="checkbox" id="pulseChk" checked /> Pulses</label>
+
+      <label>Sens
+        <input type="range" id="sensSlider" min="0.3" max="3.0" step="0.05" value="0.4" />
+      </label>
+      <label>Bar
+        <input type="range" id="barSlider" min="0.05" max="1.0" step="0.02" value="0.15" />
+      </label>
+      <label>Reach
+        <input type="range" id="reachSlider" min="0.05" max="0.6" step="0.01" value="0.15" />
+      </label>
+      <label>Gain
+        <input type="range" id="gainSlider" min="0.5" max="3" step="0.1" value="0.7" />
+      </label>
+      <label>Mix
+        <input type="range" id="mixSlider" min="0" max="1" step="0.05" value="0" />
+      </label>
+      <label>Curve
+        <input type="range" id="gammaSlider" min="0.4" max="1.4" step="0.05" value="0.4" />
+      </label>
+      <label>Morph
+        <input type="range" id="morphSlider" min="0" max="1" step="0.05" value="0.6" />
+      </label>
+
+      <button id="resetBtn" title="Reset to this path's defaults">Reset</button>
+    </div>
+
+    <!-- Status line and live meter -->
+    <div id="status">Pick an audio file or hit "Use demo tone" to start.</div>
+    <div id="meter">env: 0.00</div>
+
+    <!-- Visualization canvas -->
+    <div id="vizWrap">
+      <canvas id="viz"></canvas>
+      <div id="resizeBadge">resizing — render paused</div>
+    </div>
+  </div>
+
+  <script src="visualizer.js"></script>
+</body>
+</html>
