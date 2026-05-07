@@ -4,6 +4,8 @@ A real-time, browser-based audio visualization that maps frequency content onto 
 
 It's a single-page app — no build step, no server, no dependencies. Just three files: `visualizer.html`, `visualizer.css`, `visualizer.js`. Drop them into a folder and open the HTML file in any modern browser.
 
+![Demo[(assets/demo.gif)
+
 ## What it does
 
 Plays an audio file (or a built-in demo tone) and renders a live visualization of its frequency content. The visualization isn't a generic spectrum — each of the five available "paths" reads the audio differently and shows different musical features:
