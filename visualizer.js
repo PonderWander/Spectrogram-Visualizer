@@ -295,6 +295,11 @@
   // Generic pulse system (used by circle/polygon)
   const MAX_PULSES = 6;
   const PULSE_DURATION = 1500;
+  // Visual brightness multiplier applied to all pulse types (generic / torus /
+  // tail) at render time. 1.0 = original behavior; >1 makes pulses brighter.
+  // Applied to the alpha output, so values above 1 cause early-life alpha to
+  // saturate at the canvas maximum, making pulses pop harder at peak moments.
+  const PULSE_INTENSITY = 1.7;
   let pulses = [];
 
   // Refractory shared by circle high-flux detector and polygon kick detector
@@ -613,8 +618,10 @@
   // corresponds. Uses mel scale so low frequencies (where music lives) get
   // more path real estate than highs.
   //
-  // Closed paths use folded mapping u = |2t-1| so bass appears at both t=0
-  // and t=1, meeting smoothly at the seam.
+  // Closed paths use folded mapping u = |2t-1|: u=1 at the seam (t=0 and t=1)
+  // maps to high frequency, u=0 at the midpoint (t=0.5) maps to low frequency.
+  // So bass occupies the central region of a closed path while treble meets
+  // smoothly across the seam.
   // =========================================================================
   function binAt(t, isClosed, bins) {
     let u = isClosed ? Math.abs(2 * t - 1) : t;
@@ -1083,10 +1090,10 @@
     const widening = 1.0 + progress * 1.8;
     let alpha;
     if (progress < 0.5) {
-      alpha = (progress * 2) * 0.95;             // build to peak
+      alpha = (progress * 2) * 0.95 * PULSE_INTENSITY;             // build to peak
     } else {
       const decay = (progress - 0.5) * 2;
-      alpha = (1 - decay * decay) * 0.95;        // quadratic falloff after peak
+      alpha = (1 - decay * decay) * 0.95 * PULSE_INTENSITY;        // quadratic falloff after peak
     }
 
     function drawArc(arc, sign) {
@@ -1141,10 +1148,10 @@
     const oy = pulse.dirY * travel;
     let alpha;
     if (progress < 0.08) {
-      alpha = (progress / 0.08) * 0.95 * pulse.intensity;
+      alpha = (progress / 0.08) * 0.95 * pulse.intensity * PULSE_INTENSITY;
     } else {
       const decay = (progress - 0.08) / 0.92;
-      alpha = (1 - decay) * (1 - decay) * 0.95 * pulse.intensity;
+      alpha = (1 - decay) * (1 - decay) * 0.95 * pulse.intensity * PULSE_INTENSITY;
     }
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
@@ -1444,7 +1451,7 @@
       const progress = (now - pulse.born) / PULSE_DURATION;
       if (progress >= 1) continue;
       survivors.push(pulse);
-      const alpha = (1 - progress) * (1 - progress) * 0.7 * Math.min(1, pulse.intensity * 1.5);
+      const alpha = (1 - progress) * (1 - progress) * 0.7 * Math.min(1, pulse.intensity * 1.5) * PULSE_INTENSITY;
       ctx.strokeStyle = 'hsla(' + hue + ', 100%, 80%, ' + alpha + ')';
       ctx.lineWidth = 1.2;
       ctx.lineJoin = 'round';
