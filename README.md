@@ -1,6 +1,6 @@
 # Spectrogram Path Visualizer
 
-A real-time, browser-based audio visualization that maps frequency content onto five different geometric paths, each with its own characterized visual identity and event detection.
+A browser-based audio visualization that maps frequency content onto five different geometric paths, each with its own characterized visual identity and event detection.
 
 It's a single-page app — no build step, no server, no dependencies. Just three files: `visualizer.html`, `visualizer.css`, `visualizer.js`. Drop them into a folder and open the HTML file in any modern browser.
 
